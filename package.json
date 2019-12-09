@@ -2,7 +2,7 @@
 				"name": "4gl-outline-dxc",
 				"displayName": "4gl-outline-dxc",
 				"description": "For Informix 4gl files (*.4gl), display functions in the Outline by using a rudimentary regex.",
-				"version": "0.0.11",
+				"version": "0.0.12",
 				"repository": {
 								"type": "git",
 								"url": "https://github.com/dxcdeng/4gl-outline-dxc"
