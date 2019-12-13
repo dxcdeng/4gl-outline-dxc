@@ -24,28 +24,37 @@
         ]
     ],
     // symbols that are auto closed when typing
-    "autoClosingPairs": [
-        [
-            "{",
-            "}"
-        ],
-        [
-            "[",
-            "]"
-        ],
-        [
-            "(",
-            ")"
-        ],
-        [
-            "\"",
-            "\""
-        ],
-        [
-            "'",
-            "'"
-        ]
-    ],
+   // "autoClosingPairs": [
+   //     [
+   //         "{",
+   //         "}"
+   //     ],
+   //     [
+   //         "[",
+   //         "]"
+   //     ],
+   //     [
+   //         "(",
+   //         ")"
+   //     ],
+   //     [
+   //         "\"",
+   //         "\""
+   //     ],
+   //     [
+   //         "'",
+   //         "'"
+   //     ]
+   // ],	
+   "autoClosingPairs": [
+    { "open": "{", "close": "}" },
+    { "open": "[", "close": "]" },
+    { "open": "(", "close": ")" },
+    { "open": "'", "close": "'", "notIn": ["string", "comment"] },
+    { "open": "\"", "close": "\"", "notIn": ["string"] },
+    { "open": "`", "close": "`", "notIn": ["string", "comment"] },
+    { "open": "/**", "close": " */", "notIn": ["string"] }
+   ],
     // symbols that that can be used to surround a selection
     "surroundingPairs": [
         [
@@ -76,10 +85,11 @@
             "start": "(^\\s*FUNCTION\\b|^\\s*MAIN\\b|^\\s*#\\s*region\\b)",
             "end": "(^\\s*END\\s*FUNCTION\\b|^\\s*END\\s*MAIN\\b|^\\s*#\\s*endregion\\b)"
         }
-    },
-    //Indent
-    "indentationRules": {
-        "increaseIndentPattern": "((\\b(else|function|then|do|repeat)\\b((?!\\b(end|until)\\b).)*)|(\\{\\s*))$",
-        "decreaseIndentPattern": "^\\s*((\\b(elseif|else|end|until)\\b)|(\\})|(\\)))"
     }
+	//,
+    //Indent
+    //"indentationRules": {
+    //    "increaseIndentPattern": "((\\b(else|function|then|do|repeat)\\b((?!\\b(end|until)\\b).)*)|(\\{\\s*))$",
+    //    "decreaseIndentPattern": "^\\s*((\\b(elseif|else|end|until)\\b)|(\\})|(\\)))"
+    //}
 }

@@ -1,10 +1,10 @@
-import * as vscode from 'vscode'
+import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
 	const disposable = vscode.languages.registerDocumentSymbolProvider(
 		{ scheme: 'file', pattern: '**/*.4gl' },
-		new Pico8DocumentSymbolProvider())
-	context.subscriptions.push(disposable)
+		new IFX4GLDocumentSymbolProvider());
+	context.subscriptions.push(disposable);
 }
 
 export function deactivate() { }
@@ -21,37 +21,37 @@ class TabMeta {
  * Links tabs to their functions and their starting lines.
  */
 class SymbolStore {
-	currentTab: number
-	readonly tabFns: Map<number, Array<vscode.DocumentSymbol>>
-	readonly tabMetas: Map<number, TabMeta>
+	currentTab: number;
+	readonly tabFns: Map<number, Array<vscode.DocumentSymbol>>;
+	readonly tabMetas: Map<number, TabMeta>;
 
 	constructor() {
-		this.currentTab = 0
-		this.tabFns = new Map()
-		this.tabMetas = new Map()
+		this.currentTab = 0;
+		this.tabFns = new Map();
+		this.tabMetas = new Map();
 		// Special case: There is always a tab 0. Range is the start of the Lua section.
-		this.tabMetas.set(0, new TabMeta(new vscode.Range(new vscode.Position(2, 0), new vscode.Position(2, 0))))
+		this.tabMetas.set(0, new TabMeta(new vscode.Range(new vscode.Position(2, 0), new vscode.Position(2, 0))));
 	}
 
 	/**
 	 * Call this to add a function when one is found.
 	 */
 	add(fn: vscode.DocumentSymbol) {
-		let fns = this.tabFns.get(this.currentTab)
+		let fns = this.tabFns.get(this.currentTab);
 		if (!fns) {
-			fns = new Array()
-			this.tabFns.set(this.currentTab, fns)
+			fns = new Array();
+			this.tabFns.set(this.currentTab, fns);
 		}
-		fns.push(fn)
+		fns.push(fn);
 	}
 
 	/**
 	 * Call this when a tab break is found.
 	 */
 	advanceTab(range: vscode.Range) {
-		this.currentTab += 1
-		const tabMeta = new TabMeta(range)
-		this.tabMetas.set(this.currentTab, tabMeta)
+		this.currentTab += 1;
+		const tabMeta = new TabMeta(range);
+		this.tabMetas.set(this.currentTab, tabMeta);
 	}
 
 	/**
@@ -62,26 +62,26 @@ class SymbolStore {
 	 */
 	asSymbolArray(): vscode.DocumentSymbol[] {
 		if (this.currentTab == 0) {
-			return this.tabFns.get(0) || new Array()
-	 	} else {
-			const tabSymbols = new Array<vscode.DocumentSymbol>()
+			return this.tabFns.get(0) || new Array();
+		} else {
+			const tabSymbols = new Array<vscode.DocumentSymbol>();
 			for (let i = 0; i <= this.currentTab; i++) {
-				const fns = this.tabFns.get(i)
-				const tabMeta = this.tabMetas.get(i)
+				const fns = this.tabFns.get(i);
+				const tabMeta = this.tabMetas.get(i);
 				if (tabMeta) {
 					const tabSymbol = new vscode.DocumentSymbol(
 						'' + i,
 						'',
 						vscode.SymbolKind.Field,
 						tabMeta.range,
-						tabMeta.range)
+						tabMeta.range);
 					if (fns) {
-						tabSymbol.children = fns
+						tabSymbol.children = fns;
 					}
-					tabSymbols.push(tabSymbol)
+					tabSymbols.push(tabSymbol);
 				}
 			}
-			return tabSymbols
+			return tabSymbols;
 		}
 	}
 }
@@ -91,15 +91,15 @@ class SymbolStore {
  * found, save them in the store. At the end, report the store's
  * final state back to VS Code.
  */
-class Pico8DocumentSymbolProvider implements vscode.DocumentSymbolProvider {
+class IFX4GLDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
 	public provideDocumentSymbols(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.ProviderResult<vscode.DocumentSymbol[]> {
-		const store = new SymbolStore()
+		const store = new SymbolStore();
 		for (let i = 0; i < document.lineCount; i++) {
-			const line = document.lineAt(i)
+			const line = document.lineAt(i);
 			if (line.text.match(/^-->8/)) {
-				store.advanceTab(line.range)
+				store.advanceTab(line.range);
 			} else if (line.text.match(/^ *function /i)) {
-				const functionName = line.text.replace(/^ *function /i, '').replace(/\(.*/, '').trim()
+				const functionName = line.text.replace(/^ *function /i, '').replace(/\(.*/, '').trim();
 				// Must validate that it is not blank, otherwise it will report others incorrectly.
 				if (functionName.length > 0) {
 					store.add(new vscode.DocumentSymbol(
@@ -107,27 +107,27 @@ class Pico8DocumentSymbolProvider implements vscode.DocumentSymbolProvider {
 						'',
 						vscode.SymbolKind.Function,
 						line.range,
-						line.range))
-				} 
+						line.range));
+				}
 
-			 } else if (line.text.match(/^ *MAIN($|\s+)/)) {
+			} else if (line.text.match(/^ *MAIN($|\s+)/)) {
 				store.add(new vscode.DocumentSymbol(
 					'MAIN',
 					'',
 					vscode.SymbolKind.Key,
 					line.range,
-					line.range)) 
+					line.range));
 
-			}  else if (line.text.match(/^ *(GLOBALS ).+/)) {
+			} else if (line.text.match(/^ *(GLOBALS ).+/)) {
 				store.add(new vscode.DocumentSymbol(
 					'GLOBALS ' + i,
 					'',
 					vscode.SymbolKind.Key,
 					line.range,
-					line.range))
+					line.range));
 
-			} 
+			}
 		}
-		return store.asSymbolArray()
+		return store.asSymbolArray();
 	}
 }
