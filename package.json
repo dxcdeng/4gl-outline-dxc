@@ -1,79 +1,79 @@
 {
-  "name": "4gl-outline-dxc",
-  "displayName": "4gl-outline-dxc",
-  "description": "For Informix 4gl files (*.4gl), display functions in the Outline by using a rudimentary regex. Folding",
-  "version": "0.0.14",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dxcdeng/4gl-outline-dxc"
-  },
-  "homepage": "https://github.com/dxcdeng/4gl-outline-dxc",
-  "publisher": "dxcdeng",
-  "engines": {
-    "vscode": "^1.34.0"
-  },
-  "categories": [
-    "Programming Languages",
-    "Formatters",
-    "Other"
-  ],
-  "activationEvents": [
-    "onLanguage:4GL"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "languages": [
-      {
-        "id": "4GL",
-        "aliases": [
-          "Informix 4GL",
-          "4GL",
-          "4gl"
+    "name": "4gl-outline-dxc",
+    "displayName": "4gl-outline-dxc",
+    "description": "For Informix 4gl files (*.4gl), display functions in the Outline by using a rudimentary regex. Folding",
+    "version": "0.0.15",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dxcdeng/4gl-outline-dxc"
+    },
+    "homepage": "https://github.com/dxcdeng/4gl-outline-dxc",
+    "publisher": "dxcdeng",
+    "engines": {
+        "vscode": "^1.34.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Formatters",
+        "Other"
+    ],
+    "activationEvents": [
+        "onLanguage:4GL"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "4GL",
+                "aliases": [
+                    "Informix 4GL",
+                    "4GL",
+                    "4gl"
+                ],
+                "extensions": [
+                    ".4gl",
+                    ".per",
+                    ".spsql"
+                ],
+                "configuration": "./language-configuration.json"
+            }
         ],
-        "extensions": [
-          ".4gl",
-          ".per",
-          ".spsql"
+        "grammars": [
+            {
+                "language": "4GL",
+                "scopeName": "source.4GL",
+                "path": "./syntaxes/4GL.tmLanguage.json"
+            }
         ],
-        "configuration": "./language-configuration.json"
-      }
-    ],
-    "grammars": [
-      {
-        "language": "4GL",
-        "scopeName": "source.4GL",
-        "path": "./syntaxes/4GL.tmLanguage.json"
-      }
-    ],
-    "snippets": [
-      {
-        "language": "4GL",
-        "path": "./snippets/snippets.json"
-      }
-    ],
-    "configurationDefaults": {
-      "[4GL]": {
-        "files.encoding": "utf8",
-        "files.insertFinalNewline": true
-      },
-      "[per]": {
-        "files.encoding": "utf8",
-        "files.insertFinalNewline": true
-      }
+        "snippets": [
+            {
+                "language": "4GL",
+                "path": "./snippets/snippets.json"
+            }
+        ],
+        "configurationDefaults": {
+            "[4GL]": {
+                "files.encoding": "utf8",
+                "files.insertFinalNewline": true
+            },
+            "[per]": {
+                "files.encoding": "utf8",
+                "files.insertFinalNewline": true
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^10.12.21",
+        "tslint": "^5.20.1",
+        "typescript": "^3.7.3",
+        "vscode": "^1.1.36"
     }
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.42",
-    "@types/node": "^10.12.21",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.3",
-    "vscode": "^1.1.36"
-  }
 }
